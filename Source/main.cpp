@@ -24,6 +24,29 @@
 #include "raylib.h"
 #include "game.h"
 
+class WindowContext
+{
+    public:
+    WindowContext(int width, int height, const char* title, int fps)
+    {
+        InitWindow(width, height, title);
+        SetTargetFPS(fps);
+
+    }
+
+	WindowContext(const WindowContext&) = delete;
+	WindowContext& operator=(const WindowContext&) = delete;
+
+    ~WindowContext()
+    {
+        CloseWindow();
+    }
+};
+
+const int screenWidth = 1920;
+const int screenHeight = 1080;
+const int TARGET_FPS = 60;
+
 
 //------------------------------------------------------------------------------------
 // Program main entry point
@@ -32,18 +55,12 @@ int main()
 {    
     // Initialization
     //--------------------------------------------------------------------------------------
-    const int screenWidth = 1920;
-    const int screenHeight = 1080;
-	const int TARGET_FPS = 60;
+    
+	WindowContext window(screenWidth, screenHeight, "Space Invaders", TARGET_FPS);
 
-    InitWindow(screenWidth, screenHeight, "SPACE INVADERS");
-
-    SetTargetFPS(TARGET_FPS);               // Set our game to run at 60 frames-per-second
 
     Game game;
     game.gameState = { State::STARTSCREEN };
-    Resources resources;
-    game.resources = resources;
     game.Launch();
     //--------------------------------------------------------------------------------------
 
@@ -52,7 +69,7 @@ int main()
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
-   
+
         game.Update();
         BeginDrawing();
         ClearBackground(BLACK);
@@ -60,13 +77,6 @@ int main()
         EndDrawing();
 
     }
-
-    CloseAudioDevice();
-    
-    // De-Initialization
-    //--------------------------------------------------------------------------------------
-    CloseWindow();        // Close window and OpenGL context
-    //--------------------------------------------------------------------------------------
 
     return 0;
 }
