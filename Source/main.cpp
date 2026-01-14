@@ -24,10 +24,11 @@
 #include "raylib.h"
 #include "game.h"
 
+
 //------------------------------------------------------------------------------------
 // Program main entry point
 //------------------------------------------------------------------------------------
-int main(void)
+int main()
 {    
     // Initialization
     //--------------------------------------------------------------------------------------
@@ -39,15 +40,14 @@ int main(void)
 
     SetTargetFPS(TARGET_FPS);               // Set our game to run at 60 frames-per-second
 
-    Game game = { State::STARTSCREEN };
+    Game game;
+    game.gameState = { State::STARTSCREEN };
     Resources resources;
     game.resources = resources;
     game.Launch();
     //--------------------------------------------------------------------------------------
 
     InitAudioDevice();
-
-    const auto sound = LoadSound("./hitHurt.ogg");
 
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key

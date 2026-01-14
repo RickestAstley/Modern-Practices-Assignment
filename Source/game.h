@@ -167,9 +167,6 @@ struct Game
 
 	void InsertNewHighScore(std::string name);
 
-	void LoadLeaderboard();
-	void SaveLeaderboard();
-
 
 	// Entity Storage and Resources
 	Resources resources;
