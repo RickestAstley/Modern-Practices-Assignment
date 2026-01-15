@@ -83,6 +83,7 @@
     <LibraryPath>$(SolutionDir)External\raylib\lib;$(LibraryPath)</LibraryPath>
     <IncludePath>$(SolutionDir)External\raylib\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <IntDir>Build\Intermediate\$(Configuration)\</IntDir>
+    <CodeAnalysisRuleSet>CppCoreCheckGslRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Build\$(Configuration)\</OutDir>
@@ -126,12 +127,13 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -170,6 +172,9 @@
   <ItemGroup>
     <ClInclude Include="Source\game.h" />
     <ClInclude Include="Source\Resources.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MODERNIZATION_REPORT.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

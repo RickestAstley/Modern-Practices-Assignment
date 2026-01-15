@@ -33,4 +33,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="MODERNIZATION_REPORT.md" />
+  </ItemGroup>
 </Project>

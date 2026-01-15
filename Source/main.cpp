@@ -16,7 +16,7 @@
 *
 *   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
 *   BSD-like license that allows static linking with closed source software
-*b
+*
 *   Copyright (c) 2013-2022 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
@@ -26,16 +26,15 @@
 
 class WindowContext
 {
-    public:
+public:
     WindowContext(int width, int height, const char* title, int fps)
     {
         InitWindow(width, height, title);
         SetTargetFPS(fps);
-
     }
 
-	WindowContext(const WindowContext&) = delete;
-	WindowContext& operator=(const WindowContext&) = delete;
+    WindowContext(const WindowContext&) = delete;
+    WindowContext& operator=(const WindowContext&) = delete;
 
     ~WindowContext()
     {
@@ -43,39 +42,50 @@ class WindowContext
     }
 };
 
-const int screenWidth = 1920;
-const int screenHeight = 1080;
-const int TARGET_FPS = 60;
+class DrawingContext
+{
+public:
+    DrawingContext()
+    {
+        BeginDrawing();
+    }
 
+    DrawingContext(const DrawingContext&) = delete;
+    DrawingContext& operator=(const DrawingContext&) = delete;
+
+    ~DrawingContext()
+    {
+        EndDrawing();
+    }
+};
 
 //------------------------------------------------------------------------------------
 // Program main entry point
 //------------------------------------------------------------------------------------
 int main()
-{    
+{
     // Initialization
     //--------------------------------------------------------------------------------------
-    
-	WindowContext window(screenWidth, screenHeight, "Space Invaders", TARGET_FPS);
+    constexpr int screenWidth = 1920;
+    constexpr int screenHeight = 1080;
+    constexpr int targetFPS = 60;
 
+    WindowContext window(screenWidth, screenHeight, "Space Invaders", targetFPS);
 
     Game game;
-    game.gameState = { State::STARTSCREEN };
     game.Launch();
     //--------------------------------------------------------------------------------------
-
-    InitAudioDevice();
 
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
-
         game.Update();
-        BeginDrawing();
-        ClearBackground(BLACK);
-        game.Render();
-        EndDrawing();
-
+        
+        {
+            DrawingContext drawing;
+            ClearBackground(BLACK);
+            game.Render();
+        }
     }
 
     return 0;
