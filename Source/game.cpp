@@ -47,7 +47,6 @@ void Game::Start()
 
     // creating player
     player = Player{};
-    player.Initialize();
 
     // creating aliens
     SpawnAliens();
@@ -162,7 +161,7 @@ void Game::UpdateGameplay()
     if (IsKeyPressed(KEY_SPACE))
     {
         const float window_height = static_cast<float>(GetScreenHeight());
-        Projectile newProjectile;
+        Projectile newProjectile({player.x_pos, window_height -130.0f}, EntityType::PLAYER_PROJECTILE);
         newProjectile.position.x = player.x_pos;
         newProjectile.position.y = window_height - 130.0f;
         newProjectile.type = EntityType::PLAYER_PROJECTILE;
@@ -240,11 +239,8 @@ void Game::HandleAlienShooting()
         std::uniform_int_distribution<size_t> dist(0, aliens.size() - 1);
         const size_t randomAlienIndex = dist(GetRNG());
 
-        Projectile newProjectile;
-        newProjectile.position = aliens[randomAlienIndex].position;
-        newProjectile.position.y += 40.0f;
-        newProjectile.speed = -15;
-        newProjectile.type = EntityType::ENEMY_PROJECTILE;
+        Projectile newProjectile({aliens[randomAlienIndex].position.x, aliens[randomAlienIndex].position.y +40.0f}
+        , EntityType::ENEMY_PROJECTILE, -15);
         projectiles.push_back(newProjectile);
         shootTimer = 0.0f;
     }
@@ -533,12 +529,6 @@ void Game::InsertNewHighScore(std::string_view name)
     return false;
 }
 
-// PLAYER IMPLEMENTATION
-void Player::Initialize()
-{
-    const float window_width = static_cast<float>(GetScreenWidth());
-    x_pos = window_width / 2.0f;
-}
 
 void Player::Update()
 {

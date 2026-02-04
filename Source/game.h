@@ -40,9 +40,15 @@ struct Player
 
     EntityType type = EntityType::PLAYER;
 
-    void Initialize();
+    Player(float x = static_cast<float>(GetScreenWidth())/ 2) : x_pos(x), speed(7.0f), player_base_height(70.0f), radius(50.0f), lives(3), direction(0), activeTexture(0), timer(0.0f)
+	{
+	}
+
+	~Player() = default;
+
     void Render(Texture2D texture) const;
     void Update();
+
 };
 
 struct Projectile
@@ -52,9 +58,14 @@ struct Projectile
     bool active = true;
     EntityType type{};
 
-    // LINE WILL UPDATE WITH POSITION FOR CALCULATIONS
     Vector2 lineStart{ 0.0f, 0.0f };
     Vector2 lineEnd{ 0.0f, 0.0f };
+
+	Projectile(Vector2 pos, EntityType t, int sp = 15) : position(pos), type(t), speed(sp)
+    {
+        lineStart = { position.x, position.y - 15.0f };
+        lineEnd = { position.x, position.y + 15.0f };
+	}
 
     void Update();
     void Render(Texture2D texture) const;
