@@ -39,10 +39,7 @@ void Game::Start()
     
     for (int i = 0; i < wallCount; ++i)
     {
-        Wall newWall;
-        newWall.position.y = window_height - 250.0f;
-        newWall.position.x = wall_distance * (i + 1);
-        walls.push_back(newWall);
+		walls.emplace_back(Vector2{ wall_distance * (i + 1), window_height - 250.0f });
     }
 
     // creating player
@@ -52,8 +49,7 @@ void Game::Start()
     SpawnAliens();
 
     // creating background
-    background = Background{};
-    background.Initialize(600);
+    background = Background(600);
 
     // reset score
     score = 0;
@@ -161,11 +157,8 @@ void Game::UpdateGameplay()
     if (IsKeyPressed(KEY_SPACE))
     {
         const float window_height = static_cast<float>(GetScreenHeight());
-        Projectile newProjectile({player.x_pos, window_height -130.0f}, EntityType::PLAYER_PROJECTILE);
-        newProjectile.position.x = player.x_pos;
-        newProjectile.position.y = window_height - 130.0f;
-        newProjectile.type = EntityType::PLAYER_PROJECTILE;
-        projectiles.push_back(newProjectile);
+        
+        projectiles.emplace_back(Vector2{player.x_pos, window_height -130.0f}, EntityType::PLAYER_PROJECTILE);
     }
 
     // Aliens Shooting
@@ -239,9 +232,9 @@ void Game::HandleAlienShooting()
         std::uniform_int_distribution<size_t> dist(0, aliens.size() - 1);
         const size_t randomAlienIndex = dist(GetRNG());
 
-        Projectile newProjectile({aliens[randomAlienIndex].position.x, aliens[randomAlienIndex].position.y +40.0f}
-        , EntityType::ENEMY_PROJECTILE, -15);
-        projectiles.push_back(newProjectile);
+        Vector2 pos = aliens[randomAlienIndex].position;
+        pos.y += 40.0f;
+        projectiles.emplace_back(pos, EntityType::ENEMY_PROJECTILE, -15);
         shootTimer = 0.0f;
     }
 }
@@ -454,11 +447,9 @@ void Game::SpawnAliens()
     {
         for (int col = 0; col < formationWidth; ++col)
         {
-            Alien newAlien;
-            newAlien.active = true;
-            newAlien.position.x = formationStart.x + 450.0f + (col * alienSpacing);
-            newAlien.position.y = formationStart.y + (row * alienSpacing);
-            aliens.push_back(newAlien);
+            float x = formationStart.x + 450.0f + (col * alienSpacing);
+            float y = formationStart.y + (row * alienSpacing);
+            aliens.emplace_back(Vector2{ x, y });
         }
     }
 }
@@ -673,7 +664,7 @@ void Star::Render() const
     DrawCircle(static_cast<int>(position.x), static_cast<int>(position.y), size, color);
 }
 
-void Background::Initialize(int starAmount)
+Background::Background(int starAmount)
 {
     Stars.clear();
     Stars.reserve(starAmount);
@@ -684,12 +675,9 @@ void Background::Initialize(int starAmount)
 
     for (int i = 0; i < starAmount; ++i)
     {
-        Star newStar;
-        newStar.initPosition.x = static_cast<float>(distX(GetRNG()));
-        newStar.initPosition.y = static_cast<float>(distY(GetRNG()));
-        newStar.color = SKYBLUE;
-        newStar.size = static_cast<float>(distSize(GetRNG())) / 2.0f;
-        Stars.push_back(newStar);
+        Vector2 pos = { static_cast<float>(distX(GetRNG())), static_cast<float>(distY(GetRNG())) };
+        float size = static_cast<float>(distSize(GetRNG())) / 2.0f;
+        Stars.emplace_back(pos, size);
     }
 }
 

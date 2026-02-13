@@ -80,6 +80,8 @@ struct Wall
     int health = 50;
     float radius = 60.0f;
 
+    Wall(Vector2 pos) : position(pos) {}
+
     void Render(Texture2D texture) const;
     void Update();
 };
@@ -96,6 +98,8 @@ struct Alien
 
     int speed = 2;
 
+	Alien(Vector2 pos) : position(pos) {}
+
     void Update();
     void Render(Texture2D texture) const;
 };
@@ -107,6 +111,8 @@ struct Star
     Color color = GRAY;
     float size = 0.0f;
 
+	Star(Vector2 pos, float s) : initPosition(pos), position(pos), size(s) {}
+
     void Update(float starOffset);
     void Render() const;
 };
@@ -115,7 +121,8 @@ struct Background
 {
     std::vector<Star> Stars;
 
-    void Initialize(int starAmount);
+	Background() = default;
+    Background(int starAmount);
     void Update(float offset);
     void Render() const;
 };
