@@ -24,5 +24,4 @@ struct Resources
     // Allow moving if needed
     Resources(Resources&&) = default;
     Resources& operator=(Resources&&) = default;
-    Resources() = default;
 };

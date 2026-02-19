@@ -73,7 +73,6 @@ int main()
     WindowContext window(screenWidth, screenHeight, "Space Invaders", targetFPS);
 
     Game game;
-    game.Launch();
     //--------------------------------------------------------------------------------------
 
     // Main game loop
