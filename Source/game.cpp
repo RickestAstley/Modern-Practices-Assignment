@@ -27,7 +27,7 @@ namespace {
     return lineLength(circlePos, point) < radius;
 }
 
-void Game::Start()
+Game::Game()
 {
     // creating walls 
     const float window_width = static_cast<float>(GetScreenWidth());
@@ -53,7 +53,7 @@ void Game::Start()
 
     // reset score
     score = 0;
-    gameState = State::GAMEPLAY;
+    gameState = State::STARTSCREEN;
 }
 
 void Game::End()
@@ -78,7 +78,7 @@ void Game::Update()
     case State::STARTSCREEN:
         if (IsKeyReleased(KEY_SPACE))
         {
-            Start();
+			gameState = State::GAMEPLAY;
         }
         break;
 

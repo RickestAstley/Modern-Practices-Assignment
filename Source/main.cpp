@@ -64,8 +64,6 @@ public:
 //------------------------------------------------------------------------------------
 int main()
 {
-    // Initialization
-    //--------------------------------------------------------------------------------------
     constexpr int screenWidth = 1920;
     constexpr int screenHeight = 1080;
     constexpr int targetFPS = 60;
@@ -73,18 +71,15 @@ int main()
     WindowContext window(screenWidth, screenHeight, "Space Invaders", targetFPS);
 
     Game game;
-    //--------------------------------------------------------------------------------------
 
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
         game.Update();
+        DrawingContext drawing;
+        ClearBackground(BLACK);
+        game.Render();
         
-        {
-            DrawingContext drawing;
-            ClearBackground(BLACK);
-            game.Render();
-        }
     }
 
     return 0;

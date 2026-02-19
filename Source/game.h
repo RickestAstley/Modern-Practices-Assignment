@@ -129,6 +129,9 @@ struct Background
 
 struct Game
 {
+
+	Game();
+
     // Gamestate
     State gameState = State::STARTSCREEN;
 
@@ -150,7 +153,7 @@ struct Game
     bool newHighScore = false;
 
     // Main game loop functions
-    void Start();
+    
     void End();
     void Continue();
     void Update();
