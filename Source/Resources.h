@@ -5,8 +5,9 @@
 
 struct Resources 
 {
-    void Load();
-    
+       
+    Resources();
+
     // Using std::array for fixed-size collections
     std::array<Texture2D, 3> shipTextures;
     Texture2D alienTexture{};

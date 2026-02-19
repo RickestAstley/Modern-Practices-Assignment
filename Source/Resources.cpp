@@ -1,7 +1,7 @@
 #include "Resources.h"
 #include <iostream>
 
-void Resources::Load()
+Resources::Resources()
 {
     std::cout << "Loading resources...\n"; // Improved message
     
