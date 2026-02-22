@@ -1,4 +1,6 @@
 #include "game.h"
+#include "raylib.h"
+#include "raymath.h"
 #include <iostream>
 #include <algorithm>
 #include <random>
@@ -168,12 +170,20 @@ void Game::CheckAllCollisions()
 {
     for (auto& projectile : projectiles)
     {
+
+        Rectangle projectileRect = {
+            projectile.position.x - 2.0f,
+            std::min(projectile.lineStart.y, projectile.lineEnd.y),
+            8.0f,
+            std::abs(projectile.lineStart.y - projectile.lineEnd.y)
+        };
+
         if (projectile.type == EntityType::PLAYER_PROJECTILE)
         {
             // Check player projectile vs aliens
             for (auto& alien : aliens)
             {
-                if (CheckCollision(alien.position, alien.radius, projectile.lineStart, projectile.lineEnd))
+                if (CheckCollisionCircleRec(alien.position, alien.radius, projectileRect))
                 {
                     std::cout << "Hit!\n";
                     projectile.active = false;
@@ -185,7 +195,7 @@ void Game::CheckAllCollisions()
             // Check player projectile vs walls
             for (auto& wall : walls)
             {
-                if (CheckCollision(wall.position, wall.radius, projectile.lineStart, projectile.lineEnd))
+                if (CheckCollisionCircleRec(wall.position, wall.radius, projectileRect))
                 {
                     std::cout << "Hit!\n";
                     projectile.active = false;
@@ -197,7 +207,7 @@ void Game::CheckAllCollisions()
         {
             // Check enemy projectile vs player
             const Vector2 playerPos = { player.x_pos, static_cast<float>(GetScreenHeight() - player.player_base_height) };
-            if (CheckCollision(playerPos, player.radius, projectile.lineStart, projectile.lineEnd))
+            if (CheckCollisionCircleRec(playerPos, player.radius, projectileRect))
             {
                 std::cout << "Player hit!\n";
                 projectile.active = false;
@@ -207,7 +217,7 @@ void Game::CheckAllCollisions()
             // Check enemy projectile vs walls
             for (auto& wall : walls)
             {
-                if (CheckCollision(wall.position, wall.radius, projectile.lineStart, projectile.lineEnd))
+                if (CheckCollisionCircleRec(wall.position, wall.radius, projectileRect))
                 {
                     projectile.active = false;
                     wall.health -= 1;
