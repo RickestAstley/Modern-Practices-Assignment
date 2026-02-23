@@ -165,12 +165,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\collision.cpp" />
     <ClCompile Include="Source\game.cpp" />
     <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\render.cpp" />
     <ClCompile Include="Source\Resources.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\collision.h" />
     <ClInclude Include="Source\game.h" />
+    <ClInclude Include="Source\render.h" />
     <ClInclude Include="Source\Resources.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

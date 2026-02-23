@@ -1,4 +1,5 @@
 #include "game.h"
+#include "collision.h"
 #include "raylib.h"
 #include "raymath.h"
 #include <iostream>
@@ -183,13 +184,7 @@ void Game::CheckAllCollisions()
             // Check player projectile vs aliens
             for (auto& alien : aliens)
             {
-                if (CheckCollisionCircleRec(alien.position, alien.radius, projectileRect))
-                {
-                    std::cout << "Hit!\n";
-                    projectile.active = false;
-                    alien.active = false;
-                    score += 100;
-                }
+				registerHit(alien, projectile, score);
             }
 
             // Check player projectile vs walls
@@ -481,47 +476,6 @@ void Game::InsertNewHighScore(std::string_view name)
             leaderboard.pop_back();
         }
     }
-}
-
-[[nodiscard]] bool Game::CheckCollision(Vector2 circlePos, float circleRadius, Vector2 lineStart, Vector2 lineEnd) const noexcept
-{
-    // Check if either edge of line is within circle
-    if (pointInCircle(circlePos, circleRadius, lineStart) || pointInCircle(circlePos, circleRadius, lineEnd))
-    {
-        return true;
-    }
-
-    // Calculate the length of the line
-    const float length = lineLength(lineStart, lineEnd);
-
-    if (length < 0.001f) // Avoid division by zero
-    {
-        return false;
-    }
-
-    // Calculate the dot product
-    const float dx = lineEnd.x - lineStart.x;
-    const float dy = lineEnd.y - lineStart.y;
-    const float dotP = ((circlePos.x - lineStart.x) * dx + (circlePos.y - lineStart.y) * dy) / (length * length);
-
-    // Use dot product to find closest point
-    const float closestX = lineStart.x + (dotP * dx);
-    const float closestY = lineStart.y + (dotP * dy);
-
-    // Check if point is on the line segment
-    constexpr float buffer = 0.1f;
-    const float closeToStart = lineLength(lineStart, { closestX, closestY });
-    const float closeToEnd = lineLength(lineEnd, { closestX, closestY });
-    const float closestLength = closeToStart + closeToEnd;
-
-    if (std::abs(closestLength - length) <= buffer)
-    {
-        // Point is on the line - check distance to circle center
-        const float closeToCentre = lineLength(circlePos, { closestX, closestY });
-        return closeToCentre < circleRadius;
-    }
-
-    return false;
 }
 
 

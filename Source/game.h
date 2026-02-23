@@ -27,7 +27,15 @@ struct PlayerData
     int score = 0;
 };
 
-struct Player
+struct Entity
+{
+    Vector2 position{ 0.0f, 0.0f };
+    float radius = 0.0f;
+    bool active = true;
+    EntityType type{};
+};
+
+struct Player : public Entity
 {
     float x_pos = 0.0f;
     float speed = 7.0f;
@@ -51,27 +59,7 @@ struct Player
 
 };
 
-struct Projectile
-{
-    Vector2 position{ 0.0f, 0.0f };
-    int speed = 15;
-    bool active = true;
-    EntityType type{};
-
-    Vector2 lineStart{ 0.0f, 0.0f };
-    Vector2 lineEnd{ 0.0f, 0.0f };
-
-	Projectile(Vector2 pos, EntityType t, int sp = 15) : position(pos), type(t), speed(sp)
-    {
-        lineStart = { position.x, position.y - 15.0f };
-        lineEnd = { position.x, position.y + 15.0f };
-	}
-
-    void Update();
-    void Render(Texture2D texture) const;
-};
-
-struct Wall
+struct Wall : public Entity
 {
     Vector2 position{ 0.0f, 0.0f };
     Rectangle rec{};
@@ -86,7 +74,7 @@ struct Wall
     void Update();
 };
 
-struct Alien
+struct Alien : public Entity
 {
     Color color = WHITE;
     Vector2 position{ 0.0f, 0.0f };
@@ -99,6 +87,26 @@ struct Alien
     int speed = 2;
 
 	Alien(Vector2 pos) : position(pos) {}
+
+    void Update();
+    void Render(Texture2D texture) const;
+};
+
+struct Projectile
+{
+    Vector2 position{ 0.0f, 0.0f };
+    int speed = 15;
+    bool active = true;
+    EntityType type{};
+
+    Vector2 lineStart{ 0.0f, 0.0f };
+    Vector2 lineEnd{ 0.0f, 0.0f };
+
+    Projectile(Vector2 pos, EntityType t, int sp = 15) : position(pos), type(t), speed(sp)
+    {
+        lineStart = { position.x, position.y - 15.0f };
+        lineEnd = { position.x, position.y + 15.0f };
+    }
 
     void Update();
     void Render(Texture2D texture) const;
