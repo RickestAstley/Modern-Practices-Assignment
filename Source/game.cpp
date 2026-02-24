@@ -131,7 +131,7 @@ void Game::UpdateGameplay()
     }
 
     // Update background with offset
-    screen.playerPos = { player.x_pos, static_cast<float>(player.player_base_height) };
+    screen.playerPos = { player.position.x, static_cast<float>(player.player_base_height) };
     screen.cornerPos = { 0.0f, static_cast<float>(player.player_base_height) };
     screen.offset = lineLength(screen.playerPos, screen.cornerPos) * -1.0f;
     background.Update(screen.offset / 15.0f);
@@ -155,7 +155,7 @@ void Game::UpdateGameplay()
     {
         const float window_height = static_cast<float>(GetScreenHeight());
         
-        projectiles.emplace_back(Vector2{player.x_pos, window_height -130.0f}, EntityType::PLAYER_PROJECTILE);
+        projectiles.emplace_back(Vector2{player.position.x, window_height -130.0f}, EntityType::PLAYER_PROJECTILE);
     }
 
     // Aliens Shooting
@@ -172,52 +172,23 @@ void Game::CheckAllCollisions()
     for (auto& projectile : projectiles)
     {
 
-        Rectangle projectileRect = {
-            projectile.position.x - 2.0f,
-            std::min(projectile.lineStart.y, projectile.lineEnd.y),
-            8.0f,
-            std::abs(projectile.lineStart.y - projectile.lineEnd.y)
-        };
-
         if (projectile.type == EntityType::PLAYER_PROJECTILE)
         {
-            // Check player projectile vs aliens
-            for (auto& alien : aliens)
-            {
-				registerHit(alien, projectile, score);
-            }
+            
+		    registerAlienHit(aliens, projectile, score);
+            
 
             // Check player projectile vs walls
-            for (auto& wall : walls)
-            {
-                if (CheckCollisionCircleRec(wall.position, wall.radius, projectileRect))
-                {
-                    std::cout << "Hit!\n";
-                    projectile.active = false;
-                    wall.health -= 1;
-                }
-            }
+			registerWallHit(walls, projectile);
+
         }
         else if (projectile.type == EntityType::ENEMY_PROJECTILE)
         {
             // Check enemy projectile vs player
-            const Vector2 playerPos = { player.x_pos, static_cast<float>(GetScreenHeight() - player.player_base_height) };
-            if (CheckCollisionCircleRec(playerPos, player.radius, projectileRect))
-            {
-                std::cout << "Player hit!\n";
-                projectile.active = false;
-                player.lives -= 1;
-            }
+			registerPlayerHit(player, projectile);
 
             // Check enemy projectile vs walls
-            for (auto& wall : walls)
-            {
-                if (CheckCollisionCircleRec(wall.position, wall.radius, projectileRect))
-                {
-                    projectile.active = false;
-                    wall.health -= 1;
-                }
-            }
+			registerWallHit(walls, projectile);
         }
     }
 }
@@ -492,10 +463,10 @@ void Player::Update()
         ++direction;
     }
 
-    x_pos += speed * direction;
+    position.x += speed * direction;
 
     // Clamp position to screen bounds
-    x_pos = std::clamp(x_pos, radius, static_cast<float>(GetScreenWidth()) - radius);
+    position.x = std::clamp(position.x, radius, static_cast<float>(GetScreenWidth()) - radius);
 
     // Determine frame for animation
     timer += GetFrameTime();
@@ -514,7 +485,7 @@ void Player::Render(Texture2D texture) const
     DrawTexturePro(
         texture,
         { 0.0f, 0.0f, 352.0f, 352.0f },
-        { x_pos, window_height - player_base_height, 100.0f, 100.0f },
+        { position.x, window_height - player_base_height, 100.0f, 100.0f },
         { 50.0f, 50.0f },
         0.0f,
         WHITE

@@ -2,4 +2,8 @@
 
 #include "game.h"
 
-void registerHit(Alien& entity, Projectile& projectile, int& score);
+void registerAlienHit(std::vector<Alien>& aliens, Projectile& projectile, int& score);
+
+void registerWallHit(std::vector<Wall>& walls, Projectile& projectile);
+
+void registerPlayerHit(Player& player, Projectile& projectile);

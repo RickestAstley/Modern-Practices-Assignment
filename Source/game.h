@@ -37,10 +37,8 @@ struct Entity
 
 struct Player : public Entity
 {
-    float x_pos = 0.0f;
     float speed = 7.0f;
     float player_base_height = 70.0f;
-    float radius = 50.0f;
     int lives = 3;
     int direction = 0;
     int activeTexture = 0;
@@ -48,8 +46,11 @@ struct Player : public Entity
 
     EntityType type = EntityType::PLAYER;
 
-    Player(float x = static_cast<float>(GetScreenWidth())/ 2) : x_pos(x), speed(7.0f), player_base_height(70.0f), radius(50.0f), lives(3), direction(0), activeTexture(0), timer(0.0f)
+    Player(float x = static_cast<float>(GetScreenWidth())/ 2)
 	{
+		
+		position = { x, player_base_height };
+		radius = 50.0f;
 	}
 
 	~Player() = default;
@@ -61,14 +62,14 @@ struct Player : public Entity
 
 struct Wall : public Entity
 {
-    Vector2 position{ 0.0f, 0.0f };
     Rectangle rec{};
-    bool active = true;
     Color color = WHITE;
     int health = 50;
-    float radius = 60.0f;
 
-    Wall(Vector2 pos) : position(pos) {}
+    Wall(Vector2 pos){
+		position = pos;
+		radius = 60.0f;
+	}
 
     void Render(Texture2D texture) const;
     void Update();
@@ -77,16 +78,17 @@ struct Wall : public Entity
 struct Alien : public Entity
 {
     Color color = WHITE;
-    Vector2 position{ 0.0f, 0.0f };
-    float radius = 30.0f;
-    bool active = true;
     bool moveRight = true;
 
     EntityType type = EntityType::ENEMY;
 
     int speed = 2;
 
-	Alien(Vector2 pos) : position(pos) {}
+	Alien(Vector2 pos){
+	
+		position = pos;
+		radius = 30.0f;
+	}
 
     void Update();
     void Render(Texture2D texture) const;
