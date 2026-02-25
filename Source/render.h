@@ -1,5 +1,7 @@
 #pragma once
 #include "raylib.h"
+#include "game.h"
+#include "Resources.h"
 
 class WindowContext
 {
@@ -35,3 +37,14 @@ public:
         EndDrawing();
     }
 };
+
+void RenderStartScreen();
+
+void RenderGameplay(Background background, int score, Resources& resources,
+	std::vector<Projectile> projectiles, std::vector<Wall> walls, std::vector<Alien> aliens, Player player);
+
+void RenderEndScreen(bool newHighScore, TextInputState textInput, std::vector<PlayerData> leaderboard);
+
+void RenderNewHighScore(TextInputState textInput);
+
+void RenderLeaderboard(std::vector<PlayerData> leaderboard);

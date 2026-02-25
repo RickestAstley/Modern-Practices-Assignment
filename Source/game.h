@@ -177,15 +177,7 @@ struct Game
     void CheckAllCollisions();
     void HandleAlienShooting();
 
-    // Render functions
-    void RenderStartScreen();
-    void RenderGameplay();
-    void RenderEndScreen();
-    void RenderNewHighScore();
-    void RenderLeaderboard();
-
-    // Utility functions
-    [[nodiscard]] bool CheckCollision(Vector2 circlePos, float circleRadius, Vector2 lineStart, Vector2 lineEnd) const noexcept;
+	// Utility functions
     [[nodiscard]] bool CheckNewHighScore() const noexcept;
     void InsertNewHighScore(std::string_view name);
 
@@ -214,14 +206,13 @@ struct Game
         Vector2 cornerPos{};
         float offset = 0.0f;
     } screen;
-
-    // Text input state
-    struct TextInputState
-    {
-		std::string name;
-        Rectangle textBox{ 600.0f, 500.0f, 225.0f, 50.0f };
-        bool mouseOnText = false;
-        int framesCounter = 0;
-		const int maxNameLength = 8;
-    } textInput;
 };
+
+struct TextInputState
+{
+	std::string name;
+	Rectangle textBox{ 600.0f, 500.0f, 225.0f, 50.0f };
+	bool mouseOnText = false;
+	int framesCounter = 0;
+	const int maxNameLength = 8;
+} textInput;
