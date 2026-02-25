@@ -218,10 +218,10 @@ struct Game
     // Text input state
     struct TextInputState
     {
-        std::array<char, 10> name{ '\0' };
-        int letterCount = 0;
+		std::string name;
         Rectangle textBox{ 600.0f, 500.0f, 225.0f, 50.0f };
         bool mouseOnText = false;
         int framesCounter = 0;
+		const int maxNameLength = 8;
     } textInput;
 };

@@ -226,62 +226,42 @@ void Game::UpdateEndScreen()
 
 void Game::UpdateTextInput()
 {
-    textInput.mouseOnText = CheckCollisionPointRec(GetMousePosition(), textInput.textBox);
+	textInput.mouseOnText = CheckCollisionPointRec(GetMousePosition(), textInput.textBox);
+	SetMouseCursor(textInput.mouseOnText ? MOUSE_CURSOR_IBEAM : MOUSE_CURSOR_DEFAULT);
 
-    if (textInput.mouseOnText)
-    {
-        SetMouseCursor(MOUSE_CURSOR_IBEAM);
+	if (!textInput.mouseOnText) {
+		textInput.framesCounter = 0;
+		return;
+	}
 
-        // Get char pressed on the queue
-        int key = GetCharPressed();
+	// Get char pressed on the queue
+	int key = GetCharPressed();
 
-        // Check if more characters have been pressed on the same frame
-        while (key > 0)
-        {
-            // Only allow keys in range [32..125] (printable ASCII)
-            // Ensure we have room for the character AND null terminator
-            constexpr int maxNameLength = 8;
-            if ((key >= 32) && (key <= 125) && (textInput.letterCount < maxNameLength))
-            {
-                textInput.name[textInput.letterCount] = static_cast<char>(key);
-                ++textInput.letterCount;
-                
-                // Safely add null terminator
-                if (textInput.letterCount < textInput.name.size())
-                {
-                    textInput.name[textInput.letterCount] = '\0';
-                }
-            }
-            key = GetCharPressed();
-        }
+	// Check if more characters have been pressed on the same frame
+	while (key > 0)
+	{
+		if ((key >= 32) && (key <= 125) && (textInput.name.length() < textInput.maxNameLength))
+		{
+			textInput.name.push_back(static_cast<char>(key));
+		}
+		key = GetCharPressed();
+	}
 
-        // Remove chars
-        if (IsKeyPressed(KEY_BACKSPACE) && textInput.letterCount > 0)
-        {
-            --textInput.letterCount;
-            textInput.name[textInput.letterCount] = '\0';
-        }
+	// Remove chars
+	if (IsKeyPressed(KEY_BACKSPACE) && !textInput.name.empty())
+	{
+		textInput.name.pop_back();
+	}
 
-        ++textInput.framesCounter;
-    }
-    else
-    {
-        SetMouseCursor(MOUSE_CURSOR_DEFAULT);
-        textInput.framesCounter = 0;
-    }
+	if (!textInput.name.empty() && IsKeyReleased(KEY_ENTER))
+	{
+		InsertNewHighScore(textInput.name);
+		newHighScore = false;
+		textInput.name.clear();
+	}
 
-    // If the name is right length and enter is pressed
-    constexpr int maxNameLength = 8;
-    if (textInput.letterCount > 0 && textInput.letterCount <= maxNameLength && IsKeyReleased(KEY_ENTER))
-    {
-        const std::string nameEntry(textInput.name.data());
-        InsertNewHighScore(nameEntry);
-        newHighScore = false;
-        
-        // Reset text input
-        textInput.letterCount = 0;
-        textInput.name.fill('\0');
-    }
+	++textInput.framesCounter;
+
 }
 
 void Game::Render()
@@ -365,17 +345,17 @@ void Game::RenderNewHighScore()
     );
 
     DrawText(textInput.name.data(), static_cast<int>(textInput.textBox.x) + 5, static_cast<int>(textInput.textBox.y) + 8, 40, MAROON);
-    DrawText(TextFormat("INPUT CHARS: %i/%i", textInput.letterCount, 8), 600, 600, 20, YELLOW);
+    DrawText(TextFormat("INPUT CHARS: %i/%i", static_cast<int>(textInput.name.length()), 8), 600, 600, 20, YELLOW);
 
     if (textInput.mouseOnText)
     {
-        if (textInput.letterCount < 9)
+        if (textInput.name.length() < 9)
         {
             // Draw blinking underscore char
             if (((textInput.framesCounter / 20) % 2) == 0)
             {
                 DrawText("_",
-                    static_cast<int>(textInput.textBox.x) + 8 + MeasureText(textInput.name.data(), 40),
+                    static_cast<int>(textInput.textBox.x) + 8 + MeasureText(textInput.name.c_str(), 40),
                     static_cast<int>(textInput.textBox.y) + 12,
                     40,
                     MAROON
@@ -388,7 +368,7 @@ void Game::RenderNewHighScore()
         }
     }
 
-    if (textInput.letterCount > 0 && textInput.letterCount < 9)
+    if (!textInput.name.empty() && textInput.name.length() < 9)
     {
         DrawText("PRESS ENTER TO CONTINUE", 600, 800, 40, YELLOW);
     }
