@@ -34,12 +34,9 @@ struct Player : public Entity
 
 	Player(float x = static_cast<float>(GetScreenWidth()) / 2)
 	{
-
 		position = { x, player_base_height };
 		radius = 50.0f;
 	}
-
-	~Player() = default;
 
 	void Render(Texture2D texture) const;
 	void Update();
@@ -117,7 +114,6 @@ struct Background
 {
 	std::vector<Star> Stars;
 
-	Background() = default;
 	Background(int starAmount);
 	void Update(float offset);
 	void Render() const;

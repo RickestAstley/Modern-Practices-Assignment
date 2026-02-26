@@ -3,7 +3,7 @@
 
 Resources::Resources()
 {
-    std::cout << "Loading resources...\n"; // Improved message
+    std::cout << "Loading resources...\n";
     
     auto loadTextureChecked = [](const std::string& path) -> Texture2D {
         Texture2D tex = LoadTexture(path.c_str());
@@ -32,4 +32,32 @@ Resources::~Resources()
     UnloadTexture(alienTexture);
     UnloadTexture(barrierTexture);
     UnloadTexture(laserTexture);
+}
+
+Resources::Resources(Resources&& other) noexcept
+	: alienTexture(std::exchange(other.alienTexture, { 0 })),
+	barrierTexture(std::exchange(other.barrierTexture, { 0 })),
+	laserTexture(std::exchange(other.laserTexture, { 0 })),
+	shipTextures(other.shipTextures)
+{
+	other.shipTextures.fill({ 0 });
+}
+
+Resources& Resources::operator=(Resources&& other) noexcept
+{
+	if (this != &other)
+	{
+		UnloadTexture(alienTexture);
+		UnloadTexture(barrierTexture);
+		UnloadTexture(laserTexture);
+		for (const auto& texture : shipTextures) UnloadTexture(texture);
+
+		alienTexture = std::exchange(other.alienTexture, { 0 });
+		barrierTexture = std::exchange(other.barrierTexture, { 0 });
+		laserTexture = std::exchange(other.laserTexture, { 0 });
+
+		shipTextures = other.shipTextures;
+		other.shipTextures.fill({ 0 });
+	}
+	return *this;
 }

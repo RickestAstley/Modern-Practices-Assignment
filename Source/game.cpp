@@ -6,6 +6,7 @@
 
 
 Game::Game()
+	: player(), background(600), score(0), gameState(State::STARTSCREEN)
 {
     // creating walls 
     const float window_width = static_cast<float>(GetScreenWidth());
@@ -20,18 +21,8 @@ Game::Game()
 		walls.emplace_back(Vector2{ wall_distance * (i + 1), window_height - 250.0f });
     }
 
-    // creating player
-    player = Player{};
-
     // creating aliens
     SpawnAliens();
-
-    // creating background
-    background = Background(600);
-
-    // reset score
-    score = 0;
-    gameState = State::STARTSCREEN;
 }
 
 void Game::End()
@@ -284,11 +275,11 @@ void Game::InsertNewHighScore(std::string_view name)
 
     // Find insertion position using algorithm
     auto it = std::find_if(leaderboard.begin(), leaderboard.end(),
-        [&newData](const PlayerData& pd) { return newData.score > pd.score; });
+        [this](const PlayerData& pd) { return score > pd.score; });
 
     if (it != leaderboard.end())
     {
-        leaderboard.insert(it, newData);
+		leaderboard.emplace(it, std::string(name), score);
         
         // Keep only top 5
         if (leaderboard.size() > 5)

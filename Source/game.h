@@ -26,7 +26,7 @@ struct TextInputState
 	Rectangle textBox{ 600.0f, 500.0f, 225.0f, 50.0f };
 	bool mouseOnText = false;
 	int framesCounter = 0;
-	const int maxNameLength = 8;
+    static constexpr int maxNameLength = 8;
 };
 
 struct Game
