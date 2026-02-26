@@ -20,6 +20,15 @@ struct PlayerData
     int score = 0;
 };
 
+struct TextInputState
+{
+	std::string name;
+	Rectangle textBox{ 600.0f, 500.0f, 225.0f, 50.0f };
+	bool mouseOnText = false;
+	int framesCounter = 0;
+	const int maxNameLength = 8;
+};
+
 struct Game
 {
 
@@ -81,6 +90,8 @@ struct Game
 
     Background background;
 
+	TextInputState textInput;
+
     // Screen data
     struct ScreenData
     {
@@ -89,13 +100,4 @@ struct Game
         Vector2 cornerPos{};
         float offset = 0.0f;
     } screen;
-};
-
-struct TextInputState
-{
-	std::string name;
-	Rectangle textBox{ 600.0f, 500.0f, 225.0f, 50.0f };
-	bool mouseOnText = false;
-	int framesCounter = 0;
-	const int maxNameLength = 8;
 };

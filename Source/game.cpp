@@ -2,26 +2,8 @@
 #include "collision.h"
 #include "raylib.h"
 #include "raymath.h"
-#include <iostream>
-#include <algorithm>
-#include <random>
-#include <cmath>
 #include "render.h"
 
-// MATH FUNCTIONS - modernized with inline and noexcept
-[[nodiscard]] inline float lineLength(Vector2 A, Vector2 B) noexcept
-{
-    const float dx = B.x - A.x;
-    const float dy = B.y - A.y;
-    return std::sqrt(dx * dx + dy * dy);
-}
-
-[[nodiscard]] inline bool pointInCircle(Vector2 circlePos, float radius, Vector2 point) noexcept
-{
-    return lineLength(circlePos, point) < radius;
-}
-
-TextInputState textInput;
 
 Game::Game()
 {
@@ -124,10 +106,8 @@ void Game::UpdateGameplay()
     }
 
     // Update background with offset
-    screen.playerPos = { player.position.x, static_cast<float>(player.player_base_height) };
-    screen.cornerPos = { 0.0f, static_cast<float>(player.player_base_height) };
-    screen.offset = lineLength(screen.playerPos, screen.cornerPos) * -1.0f;
-    background.Update(screen.offset / 15.0f);
+	float playerOffset = -player.position.x;
+	background.Update(playerOffset / 15.0f);
 
     // Update projectiles and walls using range-based loops
     for (auto& projectile : projectiles)
@@ -164,6 +144,8 @@ void Game::CheckAllCollisions()
 {
     for (auto& projectile : projectiles)
     {
+
+		if (!projectile.active) continue;
 
         if (projectile.type == EntityType::PLAYER_PROJECTILE)
         {
