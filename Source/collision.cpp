@@ -3,7 +3,7 @@
 
 Rectangle getProjectileRect(const Projectile& projectile) {
 	return {
-		projectile.position.x - 2.0f,
+		projectile.position.x - 4.0f,
 		std::min(projectile.lineStart.y, projectile.lineEnd.y),
 		8.0f,
 		std::abs(projectile.lineStart.y - projectile.lineEnd.y)
@@ -15,7 +15,7 @@ void registerAlienHit(std::vector<Alien>& aliens, Projectile& projectile, int& s
 	for (auto& alien : aliens)
 	{
 		Rectangle projectileRect = getProjectileRect(projectile);
-
+		
 		if (CheckCollisionCircleRec(alien.position, alien.radius, projectileRect))
 		{
 			projectile.active = false;

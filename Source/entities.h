@@ -70,7 +70,7 @@ struct Alien : public Entity
 	Alien(Vector2 pos) {
 
 		position = pos;
-		radius = 30.0f;
+		radius = 40.0f;
 	}
 
 	void Update();
