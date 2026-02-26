@@ -166,14 +166,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\collision.cpp" />
+    <ClCompile Include="Source\entities.cpp" />
     <ClCompile Include="Source\game.cpp" />
     <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\mathHelper.cpp" />
     <ClCompile Include="Source\render.cpp" />
     <ClCompile Include="Source\Resources.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\collision.h" />
+    <ClInclude Include="Source\entities.h" />
     <ClInclude Include="Source\game.h" />
+    <ClInclude Include="Source\mathHelper.h" />
     <ClInclude Include="Source\render.h" />
     <ClInclude Include="Source\Resources.h" />
   </ItemGroup>

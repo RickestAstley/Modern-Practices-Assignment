@@ -34,7 +34,7 @@ void RenderGameplay(Background background, int score, Resources& resources,
 	}
 }
 
-void RenderEndScreen(bool newHighScore, TextInputState textInput, std::vector<PlayerData> leaderboard)
+void RenderEndScreen(bool newHighScore, TextInputState textInput,std::vector<PlayerData> leaderboard)
 {
 	if (newHighScore)
 	{
