@@ -6,8 +6,8 @@ void RenderStartScreen()
 	DrawText("PRESS SPACE TO BEGIN", 200, 350, 40, YELLOW);
 }
 
-void RenderGameplay(Background background, int score, Resources& resources, 
-	std::vector<Projectile> projectiles, std::vector<Wall> walls, std::vector<Alien> aliens, Player player){
+void RenderGameplay(Background& background, int score, Resources& resources, 
+	std::vector<Projectile>& projectiles, std::vector<Wall>& walls, std::vector<Alien>& aliens, Player& player){
 	// background render LEAVE THIS AT TOP
 	background.Render();
 
@@ -99,9 +99,8 @@ void RenderLeaderboard(std::vector<PlayerData> leaderboard)
 
 	for (size_t i = 0; i < leaderboard.size(); ++i)
 	{
-		const char* nameDisplay = leaderboard[i].name.c_str();
 		const int yPos = 140 + static_cast<int>(i * 40);
-		DrawText(nameDisplay, 50, yPos, 40, YELLOW);
+		DrawText(leaderboard[i].name.c_str(), 50, yPos, 40, YELLOW);
 		DrawText(TextFormat("%i", leaderboard[i].score), 350, yPos, 40, YELLOW);
 	}
 }
