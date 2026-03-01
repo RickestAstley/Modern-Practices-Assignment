@@ -13,7 +13,9 @@ public:
     }
 
     WindowContext(const WindowContext&) = delete;
+    WindowContext(WindowContext&&) = delete;
     WindowContext& operator=(const WindowContext&) = delete;
+    WindowContext& operator=(WindowContext&&) = delete; 
 
     ~WindowContext()
     {
@@ -30,7 +32,9 @@ public:
     }
 
     DrawingContext(const DrawingContext&) = delete;
+    DrawingContext(DrawingContext&&) = delete;
     DrawingContext& operator=(const DrawingContext&) = delete;
+    DrawingContext& operator=(DrawingContext&&) = delete;
 
     ~DrawingContext()
     {
