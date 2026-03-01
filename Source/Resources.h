@@ -3,24 +3,52 @@
 #include <array>
 #include "raylib.h"
 
-struct Resources 
+class Texture {
+
+public: Texture() : texture{ 0 } {}
+
+      explicit Texture(const std::string& path) {
+          texture = LoadTexture(path.c_str());
+          if (texture.id == 0) {
+              throw std::runtime_error("Failed to load texture: " + path);
+          }
+      }
+
+	  Texture(const Texture&) = delete;
+	  Texture& operator=(const Texture&) = delete;
+
+	  Texture(Texture&& other) noexcept : texture(std::exchange(other.texture, { 0 })) {}
+
+      Texture& operator=(Texture&& other) noexcept {
+          if (this != &other) {
+              UnloadTexture(texture);
+              texture = std::exchange(other.texture, { 0 });
+          }
+          return *this;
+      }
+
+      ~Texture() {
+          if (texture.id != 0) {
+              UnloadTexture(texture);
+          }
+      }
+
+     operator Texture2D() const { return texture; }
+
+private:
+    Texture2D texture;
+};
+
+
+class Resources 
 {
-       
-    Resources();
+    public:
 
-	~Resources();
-
-	Resources(const Resources&) = delete;
-
-	Resources& operator=(const Resources&) = delete;
-
-	Resources(Resources&& other) noexcept;
-
-	Resources& operator=(Resources&& other) noexcept;
+		Resources();
 
     // Using std::array for fixed-size collections
-    std::array<Texture2D, 3> shipTextures;
-    Texture2D alienTexture{};
-    Texture2D barrierTexture{};
-    Texture2D laserTexture{};
+    std::array<Texture, 3> shipTextures;
+    Texture alienTexture{};
+    Texture barrierTexture{};
+    Texture laserTexture{};
 };
