@@ -7,7 +7,7 @@ Resources::Resources()
 	laserTexture("./Assets/Laser.png")
 {
 
-    shipTextures[0] = Texture("./Assets/Ship1.png");
-    shipTextures[1] = Texture("./Assets/Ship2.png");
-    shipTextures[2] = Texture("./Assets/Ship3.png");
+    shipTextures[0] = TextureWrapper("./Assets/Ship1.png");
+    shipTextures[1] = TextureWrapper("./Assets/Ship2.png");
+    shipTextures[2] = TextureWrapper("./Assets/Ship3.png");
 }

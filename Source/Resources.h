@@ -2,24 +2,27 @@
 #include <vector>
 #include <array>
 #include "raylib.h"
+#include <string>
+#include <stdexcept>
+#include <utility>
 
-class Texture {
+class TextureWrapper {
 
-public: Texture() : texture{ 0 } {}
+public: TextureWrapper() : texture{ 0 } {}
 
-      explicit Texture(const std::string& path) {
+      explicit TextureWrapper(const std::string& path) {
           texture = LoadTexture(path.c_str());
           if (texture.id == 0) {
               throw std::runtime_error("Failed to load texture: " + path);
           }
       }
 
-	  Texture(const Texture&) = delete;
-	  Texture& operator=(const Texture&) = delete;
+	  TextureWrapper(const TextureWrapper&) = delete;
+	  TextureWrapper& operator=(const TextureWrapper&) = delete;
 
-	  Texture(Texture&& other) noexcept : texture(std::exchange(other.texture, { 0 })) {}
+	  TextureWrapper(TextureWrapper&& other) noexcept : texture(std::exchange(other.texture, { 0 })) {}
 
-      Texture& operator=(Texture&& other) noexcept {
+      TextureWrapper& operator=(TextureWrapper&& other) noexcept {
           if (this != &other) {
               UnloadTexture(texture);
               texture = std::exchange(other.texture, { 0 });
@@ -27,7 +30,7 @@ public: Texture() : texture{ 0 } {}
           return *this;
       }
 
-      ~Texture() {
+      ~TextureWrapper() {
           if (texture.id != 0) {
               UnloadTexture(texture);
           }
@@ -47,8 +50,8 @@ class Resources
 		Resources();
 
     // Using std::array for fixed-size collections
-    std::array<Texture, 3> shipTextures;
-    Texture alienTexture{};
-    Texture barrierTexture{};
-    Texture laserTexture{};
+    std::array<TextureWrapper, 3> shipTextures;
+    TextureWrapper alienTexture{};
+    TextureWrapper barrierTexture{};
+    TextureWrapper laserTexture{};
 };
