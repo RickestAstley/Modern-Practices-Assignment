@@ -1,5 +1,5 @@
 #include "Resources.h"
-#include <iostream>
+
 
 Resources::Resources()
     :alienTexture("./Assets/Alien.png"),

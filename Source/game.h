@@ -1,11 +1,11 @@
 #pragma once
+#include "entities.h"
 #include "raylib.h"
-#include <vector>
+#include "Resources.h"
 #include <array>
 #include <string>
 #include <string_view>
-#include "Resources.h"
-#include "entities.h"
+#include <vector>
 
 enum struct State
 {

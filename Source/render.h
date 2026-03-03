@@ -10,6 +10,9 @@ public:
     {
         InitWindow(width, height, title);
         SetTargetFPS(fps);
+        if(!IsWindowReady()) {
+            throw std::runtime_error("Failed to initialize window");
+		}
     }
 
     WindowContext(const WindowContext&) = delete;
@@ -23,9 +26,8 @@ public:
     }
 };
 
-class DrawingContext
+struct DrawingContext
 {
-public:
     DrawingContext()
     {
         BeginDrawing();

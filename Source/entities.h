@@ -18,7 +18,7 @@ struct Entity
 	float radius = 0.0f;
 	bool active = true;
 	EntityType type{};
-
+	virtual ~Entity() = default;
 };
 
 struct Player : public Entity

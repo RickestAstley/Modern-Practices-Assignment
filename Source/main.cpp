@@ -23,6 +23,8 @@
 
 #include "render.h"
 #include "game.h"
+#include <iostream>
+#include <exception>
 
 //------------------------------------------------------------------------------------
 // Program main entry point
@@ -33,19 +35,29 @@ int main()
     constexpr int screenHeight = 1080;
     constexpr int targetFPS = 60;
 
-    WindowContext window(screenWidth, screenHeight, "Space Invaders", targetFPS);
-
-    Game game;
-
-    // Main game loop
-    while (!WindowShouldClose())    // Detect window close button or ESC key
+    try
     {
-        game.Update();
-        DrawingContext drawing;
-        ClearBackground(BLACK);
-        game.Render();
-        
+
+
+        WindowContext window(screenWidth, screenHeight, "Space Invaders", targetFPS);
+
+        Game game;
+
+        // Main game loop
+        while (!WindowShouldClose())    // Detect window close button or ESC key
+        {
+            game.Update();
+            DrawingContext drawing;
+            ClearBackground(BLACK);
+            game.Render();
+
+        }
     }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Fatal Error: " << e.what() << std::endl;
+        return 1;
+	}
 
     return 0;
 }

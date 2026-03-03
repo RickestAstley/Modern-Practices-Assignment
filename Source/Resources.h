@@ -8,7 +8,8 @@
 
 class TextureWrapper {
 
-public: TextureWrapper() : texture{ 0 } {}
+public: 
+    TextureWrapper() : texture{ 0 } {} 
 
       explicit TextureWrapper(const std::string& path) {
           texture = LoadTexture(path.c_str());
@@ -24,7 +25,9 @@ public: TextureWrapper() : texture{ 0 } {}
 
       TextureWrapper& operator=(TextureWrapper&& other) noexcept {
           if (this != &other) {
-              UnloadTexture(texture);
+              if (texture.id != 0) {
+                  UnloadTexture(texture);
+              }
               texture = std::exchange(other.texture, { 0 });
           }
           return *this;
